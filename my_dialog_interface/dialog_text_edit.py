@@ -1,7 +1,7 @@
 # coding:utf-8
-from PyQt5.QtCore import Qt, QEvent, pyqtSignal
-from PyQt5.QtGui import QPixmap, QPainter, QBrush, QColor
-from PyQt5.QtWidgets import QToolButton, QLineEdit, QTextEdit
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtGui import QTextDocument
 
 from widget.my_button import CircleButton
 from functions.auto_wrap import autoWrap
@@ -11,14 +11,16 @@ class DialogTextEdit(QTextEdit):
     """ 会话消息输入框 """
 
     resizeSignal = pyqtSignal(int)  # 调整大小信号
-    hasTextSignal = pyqtSignal(bool)  # 是否含有文本信号
+    hasTextChanged = pyqtSignal(bool)  # 是否含有文本信号
 
-    def __init__(self, parent=None):
+    def __init__(self, parent):
         super().__init__(parent=parent)
         iconPath_dict = {'normal': r'resource\Image\my_dialog_interface\笑脸_normal.png',
                          'hover': r'resource\Image\my_dialog_interface\笑脸_hover.png',
                          'pressed': r'resource\Image\my_dialog_interface\笑脸_pressed.png'}
         self.smileFaceButton = CircleButton(iconPath_dict, parent=self)
+        # 之前有文本标志位
+        self.hasTextBefore = False
         # 初始化界面
         self.__initWidget()
         self.setFocus()
@@ -27,10 +29,9 @@ class DialogTextEdit(QTextEdit):
         """ 初始化界面 """
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setPlaceholderText('键入消息')
-        self.resize(438, 62)
-        self.__setQss()
+        # self.__setQss()
         # 信号连接槽函数
-        self.textChanged.connect(self.__adjustSize)
+        self.textChanged.connect(self.__textChangedSlot)
 
     def __setQss(self):
         """ 设置层叠样式 """
@@ -40,16 +41,32 @@ class DialogTextEdit(QTextEdit):
     def resizeEvent(self, e):
         """ 调整窗口大小 """
         super().resizeEvent(e)
-        self.smileFaceButton.move(8, self.height()-56)
+        self.smileFaceButton.move(8, self.height() - 56)
 
-    def __adjustSize(self):
-        """ 调整输入框高度 """
-        # 调整宽度并发送信号
-        newWidth = 617 if self.toPlainText() else 438
-        self.resize(newWidth, self.height())
-        self.hasTextSignal.emit(bool(self.toPlainText()))
-        # todo: 调整高度
-        nextText, lineBreaksNum = autoWrap(self.toPlainText(), 46)
-        if 62 + 25 * lineBreaksNum != self.height():
-            self.resizeSignal.emit(62 + 25*lineBreaksNum-self.height())
-            self.resize(self.width(), 62 + 25*lineBreaksNum)
+    def adjustWidth(self):
+        """ 调整输入框宽度 """
+        # 当前是否含有文本
+        hasTextCurrent = bool(self.toPlainText())
+        # 双边触发
+        if not self.hasTextBefore and hasTextCurrent:
+            self.setFixedWidth(self.width() + 180)
+            self.hasTextChanged.emit(True)
+        elif self.hasTextBefore and not hasTextCurrent:
+            self.setFixedWidth(self.width() - 180)
+            self.hasTextChanged.emit(False)
+        # 更新标志位
+        self.hasTextBefore = hasTextCurrent
+
+    def adjustHeight(self):
+        """ 根据文本内容调整高度 """
+        document = self.document()  # type:QTextDocument
+        if document:
+            newHeight = document.size().height() + 30
+            if newHeight != self.height():
+                self.resizeSignal.emit(newHeight-self.height())
+                self.setFixedHeight(newHeight)
+
+    def __textChangedSlot(self):
+        """ 文本改变时改变高度和宽度 """
+        self.adjustWidth()
+        self.adjustHeight()

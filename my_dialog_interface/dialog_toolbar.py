@@ -1,5 +1,6 @@
 # coding:utf-8
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QWidget
 
 from .dialog_text_edit import DialogTextEdit
@@ -47,11 +48,14 @@ class DialogToolbar(QWidget):
             moreActionsIconPath_dict, parent=self)
         self.sendMessageButton = ThreeStateToolButton(
             sendMessageIconPath_dict, (51, 50), self)
+        self.button_list = [self.catchPacketButton, self.arpSpoofButton,
+                            self.publishButton, self.moreActionsButton, self.sendMessageButton]
         # 初始化界面
         self.__initWidget()
 
     def __initWidget(self):
         """ 初始化界面 """
+        self.dialogTextEdit.resize(438, 62)
         self.resize(877, 100)
         # 隐藏发送消息按钮
         self.sendMessageButton.hide()
@@ -78,19 +82,36 @@ class DialogToolbar(QWidget):
 
     def __connectSignalToSlot(self):
         """ 信号连接到槽函数 """
+        self.dialogTextEdit.hasTextChanged.connect(self.__hasTextSlot)
         self.dialogTextEdit.resizeSignal.connect(
-            lambda x: self.resize(self.width(), self.height()+x))
-        self.dialogTextEdit.hasTextSignal.connect(self.__hasTextSlot)
+            self.__textEditHeightChangedSlot)
+
+    def __textEditHeightChangedSlot(self, deltaHeight):
+        """ 会话消息输入框高度改变对应的槽函数 """
+        self.resize(self.width(), self.height()+deltaHeight)
+        for button in self.button_list:
+            button.move(button.x(),
+                        self.height()-button.height()-32)
 
     def __hasTextSlot(self, hasText: bool):
         """ 根据输入框是否含有文本来设置按钮可见性 """
-        self.publishButton.setHidden(hasText)
-        self.arpSpoofButton.setHidden(hasText)
-        self.moreActionsButton.setHidden(hasText)
-        self.catchPacketButton.setHidden(hasText)
         self.sendMessageButton.setVisible(hasText)
+        for button in self.button_list[:-1]:
+            button.setHidden(hasText)
 
     def __setQss(self):
         """ 设置层叠样式 """
         with open(r'resource\qss\dialog_toolbar.qss', encoding='utf-8') as f:
             self.setStyleSheet(f.read())
+
+    def resizeEvent(self, e: QResizeEvent):
+        """ 调整窗口大小 """
+        deltaWidth = self.width() - e.oldSize().width()
+        # 初始化窗口时不调整按钮位置和输入框的宽度
+        if deltaWidth == self.width() + 1 or deltaWidth == 0:
+            return
+        self.dialogTextEdit.setFixedWidth(
+            self.dialogTextEdit.width() + deltaWidth)
+        self.dialogTextEdit.adjustHeight()
+        for button in self.button_list:
+            button.move(button.x()+deltaWidth, button.y())

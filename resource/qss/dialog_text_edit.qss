@@ -1,9 +1,0 @@
-QTextEdit {
-    border-radius: 31px;
-    background-color: rgb(241, 241, 241);
-    padding-left: 78px;
-    padding-right: 20px;
-    padding-top: 17px;
-    font: 18px 'Microsoft YaHei';
-    selection-background-color: rgb(48, 141, 253);
-}

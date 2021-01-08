@@ -1,0 +1,31 @@
+QWidget {
+    background: white;
+}
+
+/*滚动条*/
+QScrollBar {
+    background: transparent;
+    width: 4px;
+    padding-left: 1px;
+}
+
+/*隐藏上箭头*/
+QScrollBarr::sub-line {
+    background: transparent;
+}
+
+/*隐藏下箭头*/
+QScrollBar::add-line {
+    background: transparent;
+}
+
+QScrollBar::handle {
+    background: rgb(128, 128, 128);
+    border: 2px solid rgb(128, 128, 128);
+    min-height: 40px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}

@@ -96,7 +96,8 @@ class CircleButton(QToolButton):
         self.__bgColor = QColor(241, 241, 241)
         self.__iconPath_dict = iconPath_dict
         self.__iconPixmap_dict = {
-            key: QPixmap(iconPath_dict[key]) for key in iconPath_dict.keys()}
+            key: QPixmap(iconPath_dict[key]).scaled(
+                radius, radius, Qt.KeepAspectRatio, Qt.SmoothTransformation) for key in iconPath_dict.keys()}
         self.__initWidget()
 
     def __initWidget(self):

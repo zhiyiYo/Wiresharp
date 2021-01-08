@@ -8,3 +8,6 @@ __pycache__/
 # 忽略测试文件
 test.py
 demo.py
+
+# 忽略截图
+截图/

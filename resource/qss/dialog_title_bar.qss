@@ -1,0 +1,35 @@
+QWidget{
+    background-color: white;
+    border-bottom: 1px solid rgb(218, 218, 220);
+}
+
+QLabel{
+    color: rgb(43, 44, 51);
+    font: 27px 'Microsoft YaHei';
+    font-weight: bold;
+    background-color: transparent;
+    border: 0px;
+}
+
+QLabel:hover{
+    color: rgb(86, 86, 91);
+}
+
+/* QLabel:pressed{
+    color: rgb(212, 212, 214);
+} */
+
+QPushButton{
+    font: 15px 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgb(138, 141, 145);
+    background-color: transparent;
+}
+
+QPushButton:hover{
+    color: rgb(161, 163, 167);
+}
+
+QPushButton:pressed{
+    color: rgb(231, 232, 233);
+}
