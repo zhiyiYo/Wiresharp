@@ -1,0 +1,7 @@
+QWidget{
+    background-color: white;
+}
+
+QStackedWidget{
+    background-color: white;
+}

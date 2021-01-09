@@ -1,5 +1,5 @@
 # coding:utf-8
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QResizeEvent
 from PyQt5.QtWidgets import QWidget
 
@@ -9,6 +9,9 @@ from widget.my_button import CircleButton, ThreeStateToolButton
 
 class DialogToolbar(QWidget):
     """ 会话工具栏 """
+
+    sendMessageSignal = pyqtSignal(str)
+    adjustHeightSignal = pyqtSignal(int)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -55,6 +58,7 @@ class DialogToolbar(QWidget):
 
     def __initWidget(self):
         """ 初始化界面 """
+        self.setAttribute(Qt.WA_StyledBackground)
         self.dialogTextEdit.resize(438, 62)
         self.resize(877, 100)
         # 隐藏发送消息按钮
@@ -85,10 +89,19 @@ class DialogToolbar(QWidget):
         self.dialogTextEdit.hasTextChanged.connect(self.__hasTextSlot)
         self.dialogTextEdit.resizeSignal.connect(
             self.__textEditHeightChangedSlot)
+        # 发送消息
+        self.dialogTextEdit.sendMessageSignal.connect(self.sendMessageSignal)
+        self.sendMessageButton.clicked.connect(self.__sendMessageMessageSlot)
+
+    def __sendMessageMessageSlot(self):
+        """ 发送消息槽函数 """
+        self.sendMessageSignal.emit(self.dialogTextEdit.toPlainText())
+        self.dialogTextEdit.clear()
 
     def __textEditHeightChangedSlot(self, deltaHeight):
         """ 会话消息输入框高度改变对应的槽函数 """
-        self.resize(self.width(), self.height()+deltaHeight)
+        self.resize(self.width(), self.height() + deltaHeight)
+        self.adjustHeightSignal.emit(deltaHeight)
         for button in self.button_list:
             button.move(button.x(),
                         self.height()-button.height()-32)

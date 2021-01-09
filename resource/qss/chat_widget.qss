@@ -1,0 +1,21 @@
+QLabel#userNameLabel {
+    background-color: transparent;
+    font: 18px "Microsoft YaHei";
+    font-weight: lighter;
+}
+
+QLabel#timeLabel {
+    background-color: transparent;
+    font: 14px "Microsoft YaHei";
+    color: rgb(138, 141, 145);
+}
+
+QLabel#messageLabel {
+    background-color: transparent;
+    font: 19px "Microsoft YaHei";
+    color: rgb(138, 141, 145);
+}
+
+QWidget#windowMask {
+    background-color: rgba(255, 255, 255, 0.22)
+}

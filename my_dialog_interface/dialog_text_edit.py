@@ -1,10 +1,10 @@
 # coding:utf-8
 from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5.QtGui import QTextDocument, QKeyEvent, QContextMenuEvent
 from PyQt5.QtWidgets import QTextEdit
-from PyQt5.QtGui import QTextDocument
 
 from widget.my_button import CircleButton
-from functions.auto_wrap import autoWrap
+from widget.my_menu import TextEditMenu
 
 
 class DialogTextEdit(QTextEdit):
@@ -12,6 +12,7 @@ class DialogTextEdit(QTextEdit):
 
     resizeSignal = pyqtSignal(int)  # 调整大小信号
     hasTextChanged = pyqtSignal(bool)  # 是否含有文本信号
+    sendMessageSignal = pyqtSignal(str)  # 按下回车键后发送消息
 
     def __init__(self, parent):
         super().__init__(parent=parent)
@@ -19,6 +20,7 @@ class DialogTextEdit(QTextEdit):
                          'hover': r'resource\Image\my_dialog_interface\笑脸_hover.png',
                          'pressed': r'resource\Image\my_dialog_interface\笑脸_pressed.png'}
         self.smileFaceButton = CircleButton(iconPath_dict, parent=self)
+        self.menu = TextEditMenu(self)
         # 之前有文本标志位
         self.hasTextBefore = False
         # 初始化界面
@@ -70,3 +72,15 @@ class DialogTextEdit(QTextEdit):
         """ 文本改变时改变高度和宽度 """
         self.adjustWidth()
         self.adjustHeight()
+
+    def keyPressEvent(self, e: QKeyEvent):
+        """ 按下回车后发送消息 """
+        if e.key() in [16777220, 16777221] and self.toPlainText():
+            self.sendMessageSignal.emit(self.toPlainText())
+            self.clear()
+            return
+        super().keyPressEvent(e)
+
+    def contextMenuEvent(self, e: QContextMenuEvent):
+        """ 设置右击菜单 """
+        self.menu.exec_(e.globalPos())

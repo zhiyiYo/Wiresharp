@@ -1,0 +1,42 @@
+QWidget#navigationInterface{
+    background-color: rgb(240, 244, 248);
+    border-left: 1px solid rgb(244, 245, 246);
+}
+
+QStackedWidget{
+    background-color: rgb(240, 244, 248);
+}
+
+QLineEdit{
+    background-color: white;
+    font: 15px 'Microsoft YaHei';
+    color: rgb(97, 98, 99);
+    border: 2px solid rgb(213, 217, 222);
+    padding: 0px 40px 0px 38px;
+    border-radius: 6px;
+    selection-background-color: rgb(0, 153, 188);
+}
+
+QLabel#personalSignatureLabel {
+    font: 15px "Microsoft YaHei";
+    color: rgb(138, 141, 145);
+}
+
+QLabel#userNameLabel {
+    font: 14px "Microsoft YaHei";
+    color: black;
+}
+
+QMenu#stateMenu{
+    width: 142px;
+    padding-right: 0px;
+}
+
+QMenu::item#stateMenu {
+    padding: 7px 0px 7px 26px;
+    width: 141px;
+}
+
+QToolButton{
+    background-color: red;
+}

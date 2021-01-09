@@ -53,12 +53,12 @@ class MessageBubble(QLabel):
         self.adjustWidth()
         self.adjustSize()
         if self.width() < self.maxWidth:
-            self.resize(self.width(), 57)
+            self.resize(self.width(), 54)
 
     def adjustWidth(self):
         """ 根据消息长度调整气泡长度 """
         fontMetrics = QFontMetrics(QFont('Microsoft YaHei', 12))
-        width = fontMetrics.width(self.text()) + 30
+        width = fontMetrics.width(self.text()) + 32
         self.setFixedWidth(min(width, self.maxWidth))
 
     def __setQss(self):

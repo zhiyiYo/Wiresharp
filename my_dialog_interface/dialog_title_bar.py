@@ -67,9 +67,11 @@ class DialogTitleBar(QWidget):
                               self.stateButton.width() + 17, 60)
         self.contactNamesLabel.move(24, 20)
         # 设置层叠样式
+        self.setAttribute(Qt.WA_StyledBackground)
+        self.setObjectName('dialogTitleBar')
         self.__setQss()
 
-    def setcontactNamesName(self, contactName: str):
+    def setTitle(self, contactName: str):
         """ 设置标题栏联系人名称 """
         self.contactName = contactName
         self.contactNamesLabel.setText(contactName)

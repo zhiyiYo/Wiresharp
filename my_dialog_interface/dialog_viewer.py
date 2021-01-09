@@ -3,7 +3,7 @@ from typing import List
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap, QPainter, QPen, QColor, QFont
-from PyQt5.QtWidgets import QVBoxLayout, QWidget, QApplication
+from PyQt5.QtWidgets import QVBoxLayout, QWidget, QApplication, QScrollBar
 
 from widget.my_scroll_area import ScrollArea
 from .dialog_message_widget import DialogMessageWidget
@@ -102,7 +102,10 @@ class DialogViewer(ScrollArea):
         self.scrollWidget.resize(
             self.width(), max(self.scrollWidget.height(), newHeight + 10))
         # 强制更新层叠样式
+        messageWidget.show()
         self.setStyle(QApplication.style())
+        # 自动滚动到底部
+        self.verticalScrollBar().setValue(self.verticalScrollBar().maximum())
 
     def resizeEvent(self, e):
         """ 调整窗口大小 """

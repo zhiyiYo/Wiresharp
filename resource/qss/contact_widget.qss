@@ -1,0 +1,12 @@
+QWidget{
+    background-color: transparent;
+}
+
+QWidget#windowMask{
+    background-color: rgba(255, 255, 255, 0.22);
+}
+
+QLabel{
+    background-color: transparent;
+    font: 18px "Microsoft YaHei";
+}

@@ -1,0 +1,16 @@
+QWidget {
+    background-color: rgb(229, 228, 232)
+}
+
+
+QLabel {
+    font: 15px 'Microsoft YaHei';
+    padding: 10px 15px 10px 15px;
+    background-color: transparent;
+}
+
+QToolButton{
+    background-color: transparent;
+    border: none;
+    margin: 0px;
+}

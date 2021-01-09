@@ -1,5 +1,11 @@
 QWidget {
     background: white;
+    border: none;
+}
+
+QScrollArea{
+    background-color: white;
+    border: none;
 }
 
 /*滚动条*/
