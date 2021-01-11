@@ -52,10 +52,10 @@ class TextEditMenu(QMenu):
         # 访问系统剪贴板
         self.clipboard = QApplication.clipboard()
         # 根据剪贴板内容是否为text分两种情况讨论
-        text = self.parent().text() if isinstance(
-            self, QLineEdit) else self.parent().toPlainText()
-        selectedText = self.parent().selectedText() if isinstance(
-                    self, QLineEdit) else self.parent().textCursor().selectedText()
+        text = self.parent().text() if hasattr(
+            self.parent(), 'text') else self.parent().toPlainText()
+        selectedText = self.parent().selectedText() if hasattr(
+            self.parent(), 'selectedText') else self.parent().textCursor().selectedText()
         if self.clipboard.mimeData().hasText():
             # 再根据3种情况分类讨论
             if text:

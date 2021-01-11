@@ -1,4 +1,4 @@
-QLabel#userNameLabel {
+QLabel#contactNameLabel {
     background-color: transparent;
     font: 18px "Microsoft YaHei";
     font-weight: lighter;

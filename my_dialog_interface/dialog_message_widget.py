@@ -11,12 +11,12 @@ from widget.my_button import ThreeStateToolButton
 class DialogMessageWidget(QWidget):
     """ 对话消息小部件 """
 
-    def __init__(self, userName: str, imagePath: str, message: str,  direction: str = 'left', parent=None):
+    def __init__(self, contactName: str, imagePath: str, message: str,  direction: str = 'left', parent=None):
         """ 初始化消息小部件
 
         Parameters
         ----------
-        userName : str
+        contactName : str
             用户名
 
         imagePath : str
@@ -33,7 +33,7 @@ class DialogMessageWidget(QWidget):
         """
         super().__init__(parent=parent)
         self.message = message
-        self.userName = userName
+        self.contactName = contactName
         if direction not in ['left', 'right']:
             raise Exception('起泡方向只能是 `left` 或者 `right`')
         self.direction = direction
@@ -60,7 +60,7 @@ class DialogMessageWidget(QWidget):
         # 设置小部件位置
         if self.direction == 'left':
             self.userInfoLabel.setText(
-                f'{self.userName} ,   {self.sendMessageTime}')
+                f'{self.contactName} ,   {self.sendMessageTime}')
             self.userInfoLabel.move(100, 1)
             self.messageBubble.move(100, 23)
             self.headPortraitWidget.move(37, 0)
@@ -70,7 +70,7 @@ class DialogMessageWidget(QWidget):
             self.userInfoLabel.setText(self.sendMessageTime)
             self.userInfoLabel.adjustSize()
             self.userInfoLabel.move(
-                self.width()-self.userInfoLabel.width()-100, 1)
+                self.width()-self.userInfoLabel.width()-85, 0)
             self.messageBubble.move(
                 self.width()-self.messageBubble.width()-100, 23)
             self.headPortraitWidget.move(
@@ -92,7 +92,7 @@ class DialogMessageWidget(QWidget):
         # self.messageBubble.adjustSize_()
         if self.direction == 'right':
             self.userInfoLabel.move(
-                self.width()-self.userInfoLabel.width()-100, 1)
+                self.width()-self.userInfoLabel.width()-85, 0)
             self.messageBubble.move(
                 self.width()-self.messageBubble.width()-100, 23)
             self.headPortraitWidget.move(

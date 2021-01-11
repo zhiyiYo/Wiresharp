@@ -65,7 +65,7 @@ class DialogTextEdit(QTextEdit):
         if document:
             newHeight = document.size().height() + 30
             if newHeight != self.height():
-                self.resizeSignal.emit(newHeight-self.height())
+                self.resizeSignal.emit(newHeight - self.height())
                 self.setFixedHeight(newHeight)
 
     def __textChangedSlot(self):

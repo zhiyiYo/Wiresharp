@@ -36,7 +36,3 @@ QMenu::item#stateMenu {
     padding: 7px 0px 7px 26px;
     width: 141px;
 }
-
-QToolButton{
-    background-color: red;
-}

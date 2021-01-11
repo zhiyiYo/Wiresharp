@@ -19,4 +19,4 @@ class SearchLineEdit(QLineEdit):
         """ 右击菜单事件 """
         if not self.text():
             return
-        self.menu.exec(e.globalPos())
+        self.menu.exec_(e.globalPos())

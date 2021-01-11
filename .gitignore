@@ -9,8 +9,8 @@ __pycache__/
 test.py
 demo.py
 
-# 忽略截图
-截图/
-
 # 忽略聊天历史记录文件夹
 chat_history/
+
+# 忽略数据文件
+data/

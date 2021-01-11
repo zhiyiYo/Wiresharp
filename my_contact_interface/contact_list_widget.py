@@ -1,7 +1,7 @@
 # coding:utf-8
-from typing import List
+from typing import List, Union
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QListWidgetItem, QLabel, QAction, QMenu
 
@@ -13,6 +13,8 @@ from .contact_widget import ContactWidget
 
 class ContactListWidget(ListWidget):
     """ 消息框列表控件 """
+
+    selectContactSignal = pyqtSignal(dict)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -41,15 +43,31 @@ class ContactListWidget(ListWidget):
         # 信号连接到槽
         self.__connectSignalToSlot()
 
-    def addContactWidget(self, contactInfo: dict):
-        """ 添加联系人小部件 """
-        contactWidget = ContactWidget(contactInfo, self)
+    def addContactWidget(self, contact: Union[dict, ContactWidget]):
+        """ 添加联系人小部件
+
+        Parameters
+        ----------
+        contact : Union[dict, ContactWidget]
+            联系人信息字典或者联系人小部件，如果是字典，要求具有以下形式::
+
+            contact = {
+                'IP': str,
+                'contactName': str,
+                'headPortraitPath': str
+            }
+        """
+        if isinstance(contact, dict):
+            contactWidget = ContactWidget(contact, self)
+        else:
+            contactWidget = contact
         item = QListWidgetItem(self)
         item.setSizeHint(contactWidget.size())
         self.setItemWidget(item, contactWidget)
         self.contactWidget_list.append(contactWidget)
         self.item_list.append(item)
-        self.resize(402, self.count()*contactWidget.height())
+        self.resize(402, self.count() * contactWidget.height())
+        contactWidget.selectContactSignal.connect(self.selectContactSignal)
 
     def __setQss(self):
         """ 设置层叠样式 """

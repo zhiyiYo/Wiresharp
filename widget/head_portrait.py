@@ -29,7 +29,7 @@ class HeadPortrait(QWidget):
     def setHeadPortrait(self, imagePath: str):
         """ 更新用户头像 """
         self.__imagePixmap = QPixmap(imagePath).scaled(
-            *self.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            self.width(), self.height(), Qt.KeepAspectRatio, Qt.SmoothTransformation)
         self.update()
 
     def paintEvent(self, e):

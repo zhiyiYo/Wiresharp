@@ -1,7 +1,7 @@
 # coding:utf-8
 from typing import List
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QListWidgetItem, QLabel, QAction, QMenu
 
@@ -14,8 +14,15 @@ from .chat_widget import ChatWidget
 class ChatListWidget(ListWidget):
     """ 消息框列表控件 """
 
+    deleteChatSignal = pyqtSignal(str)
+
     def __init__(self, parent=None):
         super().__init__(parent=parent)
+        # 所有聊天的联系人信息字典
+        self.IPContactName_dict = {}  # type:dict
+        self.widgetIP_dict = {}  # widget为key
+        self.IPWidget_dict = {}  # IP为key
+        # 聊天小部件列表
         self.chatWidget_list = []  # type:List[ChatWidget]
         self.item_list = []  # type:List[QListWidgetItem]
         self.setViewportMargins(0, 55, 0, 0)
@@ -54,7 +61,7 @@ class ChatListWidget(ListWidget):
         self.showSortMenuArrow.setPixmap(
             QPixmap(r'resource\Image\navigation_interface\排序聊天下拉菜单箭头.png'))
         # 移动小部件
-        self.chatButton.move(283, 8)
+        self.chatButton.move(300, 8)
         self.searchLabel.move(18, 329+55)
         self.useSearchLabel.move(46, 326+55)
         self.showSortMenuLabel.move(11, 18)
@@ -74,13 +81,31 @@ class ChatListWidget(ListWidget):
         self.__connectSignalToSlot()
 
     def addChatWidget(self, messageInfo: dict):
-        """ 添加聊天小部件 """
+        """ 添加聊天小部件
+
+        Parameters
+        ----------
+        messageInfo : dict
+            对话消息字典，字典结构如下::
+
+            messageInfo = {
+                'contactName': str,
+                'IP': str,
+                'time': str,
+                'message': str,
+                'headPortraitPath': str
+            }
+        """
         chatWidget = ChatWidget(messageInfo, self)
         item = QListWidgetItem(self)
         item.setSizeHint(chatWidget.size())
         self.setItemWidget(item, chatWidget)
         self.chatWidget_list.append(chatWidget)
         self.item_list.append(item)
+        # 将聊天人信息添加到字典中
+        self.IPWidget_dict[messageInfo['IP']] = chatWidget
+        self.widgetIP_dict[chatWidget] = messageInfo['IP']
+        self.IPContactName_dict[messageInfo['IP']] = messageInfo['contactName']
         # 根据当前聊天框个数设置提示消息可见性
         self.__checkChatCount()
 
@@ -108,11 +133,19 @@ class ChatListWidget(ListWidget):
     def deleteChatWidget(self, index: int):
         """ 移除指定的聊天框 """
         widget = self.chatWidget_list.pop(index)
+        # 弹出IP
+        IP = self.widgetIP_dict.pop(widget)
+        self.IPContactName_dict.pop(IP)
+        self.IPWidget_dict.pop(IP)
+        # 弹出 item
         self.item_list.pop(index)
         self.removeItemWidget(self.item(index))
         self.takeItem(index)
+        # 释放内存
         widget.deleteLater()
         self.__checkChatCount()
+        # 发出信号
+        self.deleteChatSignal.emit(IP)
 
     def contextMenuEvent(self, e):
         """ 右击菜单事件 """
@@ -131,3 +164,7 @@ class ChatListWidget(ListWidget):
         self.deleteChatAct.triggered.connect(
             lambda: self.deleteChatWidget(self.currentRow()))
         self.hideChatAct.triggered.connect(self.__hideChatSlot)
+
+    def findChatListWidgetByIP(self, IP: str) -> ChatWidget:
+        """ 通过IP地址查找聊天框 """
+        return self.IPWidget_dict[IP]

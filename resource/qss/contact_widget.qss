@@ -6,7 +6,7 @@ QWidget#windowMask{
     background-color: rgba(255, 255, 255, 0.22);
 }
 
-QLabel{
+QLabel#contactNameLabel{
     background-color: transparent;
     font: 18px "Microsoft YaHei";
 }

@@ -1,0 +1,73 @@
+QWidget {
+    background-color: rgb(240, 244, 248);
+    border: none;
+}
+
+QListWidget {
+    background-color: rgb(240, 244, 248);
+    outline: none;
+}
+
+QListWidget::item {
+    background-color: transparent;
+}
+
+QLabel#showMenuLabel {
+    color: rgb(138, 141, 145);
+    font: 15px "Microsoft YaHei";
+    font-weight: bold;
+}
+
+QLabel#useSearchLabel {
+    color: rgb(138, 141, 145);
+    font: 19px "Microsoft YaHei";
+}
+
+QLabel#startChatInSkypeLabel {
+    color: black;
+    font: 26px "Microsoft YaHei";
+    font-weight: bold;
+}
+
+QGroupBox {
+    background-color: rgb(240, 244, 248);
+    font: 14px 'Microsoft YaHei';
+    font-weight: bold;
+    color: rgb(138, 141, 145);
+    border: none;
+    margin-top: 25px;
+}
+
+QGroupBox::title {
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    padding-left: 11px;
+}
+
+/*滚动条*/
+QScrollBar {
+    background: transparent;
+    width: 4px;
+    padding-left: 1px;
+}
+
+/*隐藏上箭头*/
+QScrollBarr::sub-line {
+    background: transparent;
+}
+
+/*隐藏下箭头*/
+QScrollBar::add-line {
+    background: transparent;
+}
+
+QScrollBar::handle {
+    background: rgb(128, 128, 128);
+    border: 2px solid rgb(128, 128, 128);
+    min-height: 40px;
+}
+
+QScrollBar::add-page:vertical,
+QScrollBar::sub-page:vertical {
+    background: none;
+}

@@ -61,12 +61,12 @@ class DialogViewer(ScrollArea):
         # 设置层叠样式
         self.__setQss()
 
-    def addMessageWidget(self, userName: str, imagePath: str, message: str, direction: str = 'left'):
+    def addMessageWidget(self, contactName: str, imagePath: str, message: str, direction: str = 'left'):
         """ 向视图中添加聊天气泡
 
         Parameters
         ----------
-        userName : str
+        contactName : str
             用户名
 
         imagePath : str
@@ -79,7 +79,7 @@ class DialogViewer(ScrollArea):
             气泡方向，有 `left` 和 `right` 两种
         """
         messageWidget = DialogMessageWidget(
-            userName, imagePath, message, direction, self.scrollWidget)
+            contactName, imagePath, message, direction, self.scrollWidget)
         messageWidget.resize(self.width(), messageWidget.height())
 
         # 设置小部件的位置

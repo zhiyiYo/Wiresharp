@@ -40,6 +40,7 @@ class MessageBubble(QLabel):
         self.resize(575, 50)
         # 设置文本可选中
         self.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        self.setOpenExternalLinks(True)
         # 设置层叠样式
         self.__setQss()
         # 调整宽度并自动换行
@@ -49,7 +50,6 @@ class MessageBubble(QLabel):
 
     def adjustSize_(self):
         """ 调整大小 """
-
         self.adjustWidth()
         self.adjustSize()
         if self.width() < self.maxWidth:
@@ -58,7 +58,7 @@ class MessageBubble(QLabel):
     def adjustWidth(self):
         """ 根据消息长度调整气泡长度 """
         fontMetrics = QFontMetrics(QFont('Microsoft YaHei', 12))
-        width = fontMetrics.width(self.text()) + 32
+        width = fontMetrics.width(self.text()) + 35
         self.setFixedWidth(min(width, self.maxWidth))
 
     def __setQss(self):

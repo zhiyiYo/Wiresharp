@@ -11,17 +11,28 @@ class ChatWidget(QWidget):
     """ 聊天小部件 """
 
     def __init__(self, messageInfo: dict, parent=None):
+        """ 创建聊天小部件
+
+        Parameters
+        ----------
+        messageInfo : dict
+            对话消息字典，字典结构如下::
+
+            messageInfo = {
+                'contactName': str,
+                'IP': str,
+                'time': str,
+                'message': str,
+                'headPortraitPath': str
+            }
+        """
+
         super().__init__(parent=parent)
         self.messageInfo = messageInfo.copy()
-        self.__bgColor_dict = {
-            'normal': QColor(240, 244, 248),
-            'hover': QColor(220, 241, 250),
-            'selected': QColor(199, 237, 252)
-        }
         # 实例化小部件
         self.headPortraitWidget = HeadPortrait(
             messageInfo['headPortraitPath'], (45, 45), self)
-        self.userNameLabel = QLabel(messageInfo['userName'], self)
+        self.contactNameLabel = QLabel(messageInfo['contactName'], self)
         self.messageLabel = QLabel(self)
         self.timeLabel = QLabel(messageInfo['time'], self)
         self.stateWidget = StateWidget('在线', False, parent=self)
@@ -38,7 +49,7 @@ class ChatWidget(QWidget):
         self.windowMask.hide()
         # 设置小部件位置
         self.headPortraitWidget.move(10, 12)
-        self.userNameLabel.move(68, 11)
+        self.contactNameLabel.move(68, 11)
         self.messageLabel.move(68, 36)
         self.stateWidget.move(40, 43)
         self.timeLabel.move(345, 11)
@@ -47,7 +58,7 @@ class ChatWidget(QWidget):
         self.timeLabel.setObjectName('timeLabel')
         self.windowMask.setObjectName('windowMask')
         self.messageLabel.setObjectName('messageLabel')
-        self.userNameLabel.setObjectName('userNameLabel')
+        self.contactNameLabel.setObjectName('contactNameLabel')
         self.__setQss()
 
     def __setQss(self):
@@ -64,10 +75,24 @@ class ChatWidget(QWidget):
         self.windowMask.hide()
 
     def updateWindow(self, messageInfo: dict):
-        """ 更新窗口 """
-        self.messageInfo = messageInfo
+        """ 更新窗口
+
+        Parameters
+        ----------
+        messageInfo : dict
+            对话消息字典，字典结构如下::
+
+            messageInfo = {
+                'contactName': str,
+                'IP': str,
+                'time': str,
+                'message': str,
+                'headPortraitPath': str
+            }
+        """
+        self.messageInfo = messageInfo.copy()
         self.timeLabel.setText(messageInfo['time'])
-        self.userNameLabel.setText(messageInfo['userName'])
+        self.contactNameLabel.setText(messageInfo['contactName'])
         self.headPortraitWidget.setHeadPortrait(
             messageInfo['headPortraitPath'])
         # 调整标签显示的文本
@@ -75,7 +100,15 @@ class ChatWidget(QWidget):
 
     def __setMessageText(self):
         """根据消息长短来添加省略号 """
-        fontMetrics_1 = QFontMetrics(QFont('Microsoft YaHei', 11))
-        newText = fontMetrics_1.elidedText(
+        # 调整消息
+        fontMetrics = QFontMetrics(QFont('Microsoft YaHei', 11))
+        newText = fontMetrics.elidedText(
             self.messageInfo['message'], Qt.ElideRight, 255)
         self.messageLabel.setText(newText)
+        self.messageLabel.adjustSize()
+        # 调整用户名
+        fontMetrics = QFontMetrics(QFont('Microsoft YaHei', 10))
+        newText = fontMetrics.elidedText(
+            self.messageInfo['contactName'], Qt.ElideRight, 240)
+        self.contactNameLabel.setText(newText)
+        self.contactNameLabel.adjustSize()

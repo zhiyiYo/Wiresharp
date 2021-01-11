@@ -43,6 +43,7 @@ class TitleBar(QWidget):
     def __initWidget(self):
         """ 初始化小部件 """
         self.setFixedHeight(40)
+        self.setAttribute(Qt.WA_StyledBackground)
         self.__setQss()
         # 将按钮的点击信号连接到槽函数
         self.minBt.clicked.connect(self.window().showMinimized)

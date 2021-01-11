@@ -1,6 +1,3 @@
-import sys
-import socket
-
 from halo import Halo
 from scapy.all import sniff, Packet, IP
 from scapy.contrib.mqtt import MQTTPublish
@@ -17,7 +14,7 @@ def on_wireshark(packet: Packet):
     packet_info['msg'] = packet.value.decode('gbk')
     packet_info['src host'] = str(packet[IP].src)
     packet_info['dst host'] = str(packet[IP].dst)
-    print('抓到宝了：',packet_info)
+    print('抓到包了：',packet_info)
 
 
 sniff_port = 1883

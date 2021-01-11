@@ -247,7 +247,15 @@ class OpacityThreeStateToolButton(QToolButton):
         self.resize(*buttonSize)
         self.installEventFilter(self)
         self.setWindowFlag(Qt.FramelessWindowHint)
-        self.setAttribute(Qt.WA_TranslucentBackground)
+        # self.setAttribute(Qt.WA_TranslucentBackground)
+
+    def setOpacityIcon(self, iconPath: str, buttonSize: tuple = None, opacity_dict: tuple = None):
+        """ 设置图标 """
+        self.__iconPath = iconPath
+        if opacity_dict:
+            self.opacity_dict = opacity_dict
+        if buttonSize:
+            self.resize(*buttonSize)
 
     def eventFilter(self, obj, e: QEvent):
         """ 过滤事件 """

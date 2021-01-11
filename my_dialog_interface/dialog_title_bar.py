@@ -1,6 +1,6 @@
 # coding:utf-8
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QPen, QColor
+from PyQt5.QtGui import QPainter, QPen, QColor, QFont, QFontMetrics
 from PyQt5.QtWidgets import QWidget, QLabel
 
 from widget.my_button import ThreeStatePushButton, CircleButton
@@ -74,7 +74,15 @@ class DialogTitleBar(QWidget):
     def setTitle(self, contactName: str):
         """ 设置标题栏联系人名称 """
         self.contactName = contactName
-        self.contactNamesLabel.setText(contactName)
+        self.__adjustTitle()
+
+    def __adjustTitle(self):
+        """ 调整标题标签 """
+        fontMetrics = QFontMetrics(QFont('Microsoft YaHei', 19, 75))
+        newText = fontMetrics.elidedText(
+            self.contactName, Qt.ElideRight, self.width() - 240)
+        self.contactNamesLabel.setText(newText)
+        self.contactNamesLabel.adjustSize()
 
     def __setQss(self):
         """ 设置层叠样式 """
@@ -94,4 +102,5 @@ class DialogTitleBar(QWidget):
         self.createGroupButton.move(
             self.width()-self.createGroupButton.width()-19, 30)
         self.callButton.move(self.createGroupButton.x() -
-                             self.callButton.width()-13, 30)
+                             self.callButton.width() - 13, 30)
+        self.__adjustTitle()
