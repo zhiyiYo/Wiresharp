@@ -39,7 +39,8 @@ class MessageBubble(QLabel):
         """ 初始化窗口 """
         self.resize(575, 50)
         # 设置文本可选中
-        self.setTextInteractionFlags(Qt.TextSelectableByMouse)
+        self.setTextInteractionFlags(
+            Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
         self.setOpenExternalLinks(True)
         # 设置层叠样式
         self.__setQss()

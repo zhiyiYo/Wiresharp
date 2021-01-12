@@ -158,21 +158,25 @@ class DialogInterface(QWidget):
         """ 开始抓包 """
         self.isCatchingPacket = True
         self.startWiresharkSignal.emit(messageInfo['IP'])
+        self.dialogToolbar.catchPacketButton.setToolTip('停止抓包')
 
     def __stopWireshark(self):
         """ 停止抓包 """
         self.isCatchingPacket = False
         self.stopWiresharkSignal.emit()
+        self.dialogToolbar.catchPacketButton.setToolTip('开始抓包')
 
     def __startArpAttack(self, messageInfo: dict):
         """ 开始 ARP 攻击 """
         self.isArpAttack = True
         self.startArpAttackSignal.emit(messageInfo['IP'])
+        self.dialogToolbar.arpSpoofButton.setToolTip('停止欺骗')
 
     def __stopArpAttack(self):
         """ 开始 ARP 攻击 """
         self.isArpAttack = False
         self.stopArpAttackSignal.emit()
+        self.dialogToolbar.arpSpoofButton.setToolTip('开始欺骗')
 
     def receiveMessageSlot(self, messageInfo: dict):
         """ 收到消息 """
@@ -203,14 +207,11 @@ class DialogInterface(QWidget):
         """ 抓包按钮槽函数 """
         msg = '停止抓包' if self.isCatchingPacket else '开始抓包'
         self.__sendMessageSlot(msg)
-        self.dialogToolbar.catchPacketButton.setToolTip(msg)
 
     def __arpAttackButtonClickedSlot(self):
         """ ARP 攻击按钮槽函数 """
-        tip = '开始欺骗' if not self.isArpAttack else '停止欺骗'
         msg = '开始 ARP 攻击' if not self.isArpAttack else '停止 ARP 攻击'
         self.__sendMessageSlot(msg)
-        self.dialogToolbar.arpSpoofButton.setToolTip(tip)
 
     def __publishButtonClickedSlot(self):
         """ 发布按钮槽函数 """

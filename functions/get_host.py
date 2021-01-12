@@ -49,7 +49,7 @@ def getHost() -> List[Tuple[str, str]]:
         raise Exception('无法找到无线网卡')
     # 发包以获取ip地址
     request = Ether(dst='ff:ff:ff:ff:ff:ff') / ARP(pdst=getIpWithMask())
-    answers, unAnswers = srp(request, iface=wlan, timeout=5, verbose=False)
+    answers, unAnswers = srp(request, iface=wlan, timeout=3, verbose=False)
     # 根据ip地址获取主机名（不包括网关）
     host_dict = [(socket.getfqdn(recv.psrc), recv.psrc)
                  for send, recv in answers if not recv.psrc.endswith('.1')]

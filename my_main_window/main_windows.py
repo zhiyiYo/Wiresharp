@@ -5,7 +5,7 @@ from copy import deepcopy
 
 from PyQt5.QtCore import Qt, QTime
 from win32.lib import win32con
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap,QIcon
 from win32 import win32api, win32gui
 from PyQt5.QtWidgets import QWidget, QApplication, QStackedWidget
 
@@ -53,6 +53,7 @@ class WireSharp(QWidget):
         """ 初始化界面 """
         self.setWindowTitle('Wiresharp')
         self.setWindowFlags(Qt.FramelessWindowHint)
+        self.setWindowIcon(QIcon(r'resource\Image\icon\icon.png'))
         self.setAttribute(Qt.WA_TranslucentBackground | Qt.WA_StyledBackground)
         WindowEffect.setShadowEffect(self.winId())
         WindowEffect.setWindowAnimation(self.winId())
