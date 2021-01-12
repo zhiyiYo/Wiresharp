@@ -1,5 +1,6 @@
 # 忽略.vscode文件夹
 .vscode/
+.VSCodeCounter
 
 # 忽略python缓存文件
 */__pycache__
@@ -14,3 +15,6 @@ chat_history/
 
 # 忽略数据文件
 data/
+
+# 忽略配置文件
+config/

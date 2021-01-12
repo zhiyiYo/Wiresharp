@@ -14,7 +14,7 @@ def getUserInfo():
         userInfo = {
             "userName": "之一",
             "personalSignature": "うそじゃないよ",
-            "headPortraitPath": "resource\\Image\\head_portrait\\硝子（1）.png"
+            "headPortraitPath": r"resource\Image\head_portrait\硝子.jpg"
         }
 
     return userInfo

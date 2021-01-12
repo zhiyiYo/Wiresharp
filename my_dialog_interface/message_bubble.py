@@ -1,7 +1,9 @@
 # coding:utf-8
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPainter, QBrush, QColor, QFont, QFontMetrics, QPalette, QTextDocument
-from PyQt5.QtWidgets import QTextEdit, QWidget, QLabel,QSizePolicy
+import os
+from PyQt5.QtCore import Qt, QUrl
+from PyQt5.QtGui import (QBrush, QColor, QDesktopServices, QFont, QFontMetrics,
+                         QPainter, QPalette, QTextDocument)
+from PyQt5.QtWidgets import QLabel, QSizePolicy, QTextEdit, QWidget
 
 
 class MessageBubble(QLabel):
@@ -41,13 +43,16 @@ class MessageBubble(QLabel):
         # 设置文本可选中
         self.setTextInteractionFlags(
             Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
-        self.setOpenExternalLinks(True)
+        # self.setOpenExternalLinks(True)
         # 设置层叠样式
         self.__setQss()
         # 调整宽度并自动换行
         self.setAlignment(Qt.AlignTop)
         self.setWordWrap(True)
         self.adjustSize_()
+        # 信号连接到槽函数
+        self.linkActivated.connect(
+            lambda x: QDesktopServices.openUrl(QUrl(os.path.realpath(x))))
 
     def adjustSize_(self):
         """ 调整大小 """

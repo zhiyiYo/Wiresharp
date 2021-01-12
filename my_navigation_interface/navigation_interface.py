@@ -133,6 +133,8 @@ class NavigationInterface(QWidget):
         """ 调整窗口大小 """
         super().resizeEvent(e)
         self.stackedWidget.resize(self.width(), self.height() - 183)
+        self.contactInterface.resize(self.stackedWidget.size())
+        self.chatListWidget.resize(self.stackedWidget.size())
 
     def __setLabelText(self):
         """设置用户名和个新签名标签的文字并根据字符串长短来添加省略号 """

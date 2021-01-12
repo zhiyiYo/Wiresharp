@@ -1,11 +1,12 @@
 # coding:utf-8
+from time import time
 from ctypes import POINTER, cast
 from ctypes.wintypes import HWND, MSG, POINT
 from copy import deepcopy
 
 from PyQt5.QtCore import Qt, QTime
 from win32.lib import win32con
-from PyQt5.QtGui import QPixmap,QIcon
+from PyQt5.QtGui import QPixmap, QIcon
 from win32 import win32api, win32gui
 from PyQt5.QtWidgets import QWidget, QApplication, QStackedWidget
 
@@ -33,12 +34,15 @@ class WireSharp(QWidget):
         self.__getContactInfo()
         self.userInfo = getUserInfo()
         # 实例化小部件
+        t1 = time()
+        print('🤖 正在初始化界面...')
         self.titleBar = TitleBar(self)
         self.stackedWidget = QStackedWidget(self)
         self.dialogInterface = DialogInterface(self)
         self.welcomeInterface = WelcomeInterface(self)
         self.navigationInterface = NavigationInterface(
             self.contactInfo_list, self)
+        print(f'✅ 完成界面的初始化，耗时{time()-t1:.2f}s')
         # 创建线程
         self.publishThread = PublishThread(self)
         self.wiresharkThread = WiresharkThread(self)
@@ -73,7 +77,10 @@ class WireSharp(QWidget):
 
     def __getContactInfo(self) -> list:
         """ 获取联系人信息 """
+        print('🌍 正在获取局域网内的主机...')
+        t1 = time()
         host_list = getHost()
+        print(f'✅ 完成局域网内主机的获取，耗时{time()-t1:.2f}s')
         self.contactInfo_list = []
         self.headPortraitPath_list = [
             r'resource\Image\head_portrait\硝子（1）.png',
@@ -89,10 +96,8 @@ class WireSharp(QWidget):
 
     def resizeEvent(self, e):
         """ 调整窗口大小 """
-        """ if hasattr(self, 'dialogInterface'):
-            self.dialogInterface.resize(self.width() - 402, self.height() - 40) """
         self.titleBar.resize(self.width(), self.titleBar.height())
-        self.stackedWidget.resize(self.width()-402, self.height()-40)
+        self.stackedWidget.resize(self.width() - 402, self.height() - 40)
         # 更新标题栏图标
         if isMaximized(int(self.winId())):
             self.titleBar.maxBt.setMaxState(True)
