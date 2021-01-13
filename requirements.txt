@@ -4,7 +4,9 @@ async-generator==1.10
 attrs==20.2.0
 autopep8==1.5.4
 backcall==0.2.0
+beautifulsoup4==4.9.3
 bleach==3.2.1
+bs4==0.0.1
 certifi==2020.12.5
 cffi==1.14.3
 colorama==0.4.3
@@ -57,6 +59,7 @@ rope==0.18.0
 scapy==2.4.4
 Send2Trash==1.5.0
 six==1.15.0
+soupsieve==2.1
 terminado==0.9.1
 testpath==0.4.4
 toml==0.10.1

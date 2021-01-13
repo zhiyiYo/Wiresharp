@@ -1,6 +1,7 @@
 # coding:utf-8
 import os
 import json
+import socket
 
 
 def getUserInfo():
@@ -12,7 +13,7 @@ def getUserInfo():
             userInfo = json.load(f)
     except:
         userInfo = {
-            "userName": "之一",
+            "userName": socket.gethostname(),
             "personalSignature": "うそじゃないよ",
             "headPortraitPath": r"resource\Image\head_portrait\硝子.jpg"
         }

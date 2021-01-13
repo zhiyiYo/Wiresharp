@@ -151,7 +151,7 @@ class DialogInterface(QWidget):
         else:
             messageInfo = deepcopy(self.currentContactInfo)
             messageInfo['time'] = QTime.currentTime().toString('H:mm')
-            messageInfo['message'] = '<center><img src="resource\Image\emoticon\黑人问号.jpg" /></center>'
+            messageInfo['message'] = '<center><img src="resource\Image\emoticon\新花样.gif" /></center>'
             self.receiveMessageSlot(messageInfo)
 
     def __startWireshark(self, messageInfo: dict):

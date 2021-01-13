@@ -1,8 +1,10 @@
 # coding:utf-8
 import os
+
+from bs4 import BeautifulSoup
 from PyQt5.QtCore import Qt, QUrl
 from PyQt5.QtGui import (QBrush, QColor, QDesktopServices, QFont, QFontMetrics,
-                         QPainter, QPalette, QTextDocument)
+                         QPainter, QPalette, QTextDocument, QMovie)
 from PyQt5.QtWidgets import QLabel, QSizePolicy, QTextEdit, QWidget
 
 
@@ -43,16 +45,23 @@ class MessageBubble(QLabel):
         # 设置文本可选中
         self.setTextInteractionFlags(
             Qt.TextSelectableByMouse | Qt.LinksAccessibleByMouse)
-        # self.setOpenExternalLinks(True)
         # 设置层叠样式
         self.__setQss()
-        # 调整宽度并自动换行
-        self.setAlignment(Qt.AlignTop)
-        self.setWordWrap(True)
-        self.adjustSize_()
+        # 如果信息不是HTML格式，就调整气泡宽度
+        if not BeautifulSoup(self.message, 'html.parser').find():
+            self.setWordWrap(True)
+            self.adjustSize_()
+        else:
+            # 如果有动图就设置一个QMovie
+            img = BeautifulSoup(self.message, 'html.parser').find('img')
+            if img and img.get('src'):
+                movie = QMovie(img.get('src'))
+                self.setMovie(movie)
+                movie.start()
+            self.adjustSize()
         # 信号连接到槽函数
         self.linkActivated.connect(
-            lambda x: QDesktopServices.openUrl(QUrl(os.path.realpath(x))))
+            lambda x: QDesktopServices.openUrl(QUrl('file:///'+os.path.realpath(x))))
 
     def adjustSize_(self):
         """ 调整大小 """
