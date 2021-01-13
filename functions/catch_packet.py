@@ -13,7 +13,10 @@ def writeCatchPacket(packet: dict, path: str):
 
 def readCatchPacket(path: str) -> dict:
     """ 读取指定的数据包文件 """
+    # 文件不存在时返回None
+    if not os.path.exists(path):
+        return None
+
     with open(path, encoding='utf-8') as f:
         packet = json.load(f)
-
     return packet

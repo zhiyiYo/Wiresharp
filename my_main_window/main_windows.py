@@ -269,8 +269,11 @@ class WireSharp(QWidget):
     def __publishSlot(self):
         """ 发布消息槽函数 """
         packetInfo = readCatchPacket('data\\catch_packet.json')
-        self.publishThread.publish(
-            packetInfo['dst host'], packetInfo['topic'], packetInfo['msg'])
+        if packetInfo:
+            self.publishThread.publish(
+                packetInfo['dst host'], packetInfo['topic'], packetInfo['msg'])
+        else:
+            self.__sendMessage('😋 当前没有抓到的包可供发布哦~')
 
     def __publishStateChangedSlot(self, message: str):
         """ 发布状态改变对应的槽函数 """

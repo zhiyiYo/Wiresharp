@@ -11,6 +11,9 @@ Start chat♂ting in Wiresharp
 * Recurrence Attack
 ![重现攻击](Screenshot/发布消息.png)
 
+* Funny talk
+![新花样](Screenshot/新花样.gif)
+
 ## Coding Environment
 * Python 3.8.6 64-bit
 * pyqt5 5.13.2
