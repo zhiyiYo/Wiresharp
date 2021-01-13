@@ -4,6 +4,7 @@ import re
 import json
 from typing import List
 from copy import deepcopy
+from collections import OrderedDict
 
 from PyQt5.QtCore import Qt, pyqtSignal, QTime
 from PyQt5.QtGui import QPixmap
@@ -42,7 +43,7 @@ class DialogInterface(QWidget):
         self.stackedWidget = QStackedWidget(self)
         self.__dialogViewer_list = []  # type:List[DialogViewer]
         self.__dialogInfo_list = []  # type:List[dict]
-        self.__IPIndex_dict = {}
+        self.__IPIndex_dict = OrderedDict()
         # 初始化窗口
         self.__initWidget()
 
@@ -54,7 +55,7 @@ class DialogInterface(QWidget):
                             self.dialogToolbar.height() + 200)
         self.resize(877, 917)
         self.stackedWidget.resize(self.width(), self.height(
-        )-self.dialogTitleBar.height()-self.dialogToolbar.height())
+        ) - self.dialogTitleBar.height() - self.dialogToolbar.height())
         self.stackedWidget.move(0, self.dialogTitleBar.height())
         # 设置层叠样式
         self.__setQss()
@@ -88,9 +89,13 @@ class DialogInterface(QWidget):
 
     def removeDialog(self, IP: str):
         """ 移除会话 """
-        index = self.__IPIndex_dict[IP]
-        dialogViewer = self.__dialogViewer_list[index]
+        index = self.__IPIndex_dict.pop(IP)
+        dialogViewer = self.__dialogViewer_list.pop(index)
+        self.__dialogInfo_list.pop(index)
         self.stackedWidget.removeWidget(dialogViewer)
+        # 更新下标
+        for i, key in enumerate(self.__IPIndex_dict.keys()):
+            self.__IPIndex_dict[key] = i
         # 释放内存
         dialogViewer.deleteLater()
 
@@ -167,7 +172,7 @@ class DialogInterface(QWidget):
         self.dialogToolbar.catchPacketButton.setToolTip('开始抓包')
 
     def __startArpAttack(self, messageInfo: dict):
-        """ 开始 ARP 攻击 """
+        """ 开始 ARP 攻击(发送错误 MAC 地址) """
         self.isArpAttack = True
         self.startArpAttackSignal.emit(messageInfo['IP'])
         self.dialogToolbar.arpSpoofButton.setToolTip('停止欺骗')
@@ -220,3 +225,7 @@ class DialogInterface(QWidget):
     def __publish(self):
         """ 发布消息 """
         self.publishSignal.emit()
+
+    @property
+    def IPIndex_dict(self):
+        return self.__IPIndex_dict

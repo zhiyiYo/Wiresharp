@@ -28,9 +28,10 @@ class ArpAttackThread(QThread):
 
     def stopArpAttack(self):
         """ 停止 ARP 攻击 """
-        self.isStopArp = True
-        self.arpAttackStateChangedSignal.emit(
-            f'👺 已停止对 {self.targetIP} 的 ARP 攻击')
+        if not self.isStopArp:
+            self.isStopArp = True
+            self.arpAttackStateChangedSignal.emit(
+                f'👺 已停止对 {self.targetIP} 的 ARP 攻击')
 
     def startArpAttack(self, targetIP: str = '', isSendMyMac: bool = True):
         """ 开始 ARP 攻击
@@ -50,6 +51,7 @@ class ArpAttackThread(QThread):
                 f'😆 客官别急，还在对 {self.targetIP} ARP 攻击呢...')
             return
         self.targetIP = targetIP
+        self.isSendMyTrueMac = isSendMyMac
         self.arpAttackStateChangedSignal.emit(
             f'👺 正在对 {self.targetIP} 进行 ARP 攻击...')
         self.isStopArp = False

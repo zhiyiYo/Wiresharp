@@ -173,6 +173,8 @@ class WireSharp(QWidget):
         # todo:联系人界面信号连接到槽函数
         self.contactInterface.selectContactSignal.connect(
             self.__selectContactSlot)
+        self.chatListWidget.currentChatChanged.connect(
+            self.__currentChatChangedSlot)
         self.chatListWidget.deleteChatSignal.connect(self.__deleteChatSlot)
         # todo:会话界面信号连接到槽函数
         self.dialogInterface.sendMessageSignal.connect(self.__newMessageSlot)
@@ -203,21 +205,31 @@ class WireSharp(QWidget):
     def __selectContactSlot(self, contactInfo: dict):
         """ 选中联系人时显示对话窗口 """
         # 如果选中的IP不在聊天列表已有的聊天用户中，就新建一个对话窗口
-        if contactInfo['IP'] not in self.chatListWidget.IPContactName_dict.keys():
+        IP = contactInfo['IP']
+        if IP not in list(self.chatListWidget.IPContactName_dict.keys()) \
+                + list(self.dialogInterface.IPIndex_dict.keys()):
             self.dialogInterface.addDialog(contactInfo)
         else:
-            self.dialogInterface.setCurrentDialogByIP(contactInfo['IP'])
+            self.dialogInterface.setCurrentDialogByIP(IP)
         # 将当前窗口设置为对话界面
+        self.stackedWidget.setCurrentWidget(self.dialogInterface)
+
+    def __currentChatChangedSlot(self, IP: str):
+        """ 当前选中的聊天框改变对应的槽函数 """
+        self.dialogInterface.setCurrentDialogByIP(IP)
         self.stackedWidget.setCurrentWidget(self.dialogInterface)
 
     def __newMessageSlot(self, messageInfo: dict):
         """ 发送/接收 对话消息的槽函数 """
+        IP = messageInfo['IP']
         # 如果对话框中没有当前的联系人对话记录，就创建一个新的聊天框，否则更新聊天框
-        if messageInfo['IP'] not in self.chatListWidget.IPContactName_dict.keys():
+        if IP not in self.chatListWidget.IPContactName_dict.keys():
             self.chatListWidget.addChatWidget(messageInfo)
         else:
-            chatWidget = self.chatListWidget.findChatListWidgetByIP(
-                messageInfo['IP'])
+            chatWidget, i = self.chatListWidget.findChatListWidgetByIP(
+                IP, True)
+            self.chatListWidget.setCurrentItem(
+                self.chatListWidget.item_list[i])
             chatWidget.updateWindow(messageInfo)
 
     def __deleteChatSlot(self, IP: str):
@@ -227,6 +239,7 @@ class WireSharp(QWidget):
 
     def __startWiresharpSlot(self, IP: str):
         """ 开始抓包 """
+        self.arpAttackThread.stopArpAttack()
         self.arpAttackThread.startArpAttack(IP)
         self.wiresharkThread.startWireshark()
 
@@ -246,8 +259,8 @@ class WireSharp(QWidget):
             self.__sendMessage(f.read())
 
     def __startArpAttackSlot(self, IP: str):
-        """ 开始 ARP 欺骗槽函数 """
-        self.arpAttackThread.startArpAttack(IP)
+        """ 开始 ARP 欺骗槽函数(发送错误 MAC 地址) """
+        self.arpAttackThread.startArpAttack(IP, False)
 
     def __stopArpAttackSlot(self):
         """ 开始 ARP 欺骗槽函数 """

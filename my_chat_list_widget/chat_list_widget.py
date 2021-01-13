@@ -15,6 +15,7 @@ class ChatListWidget(ListWidget):
     """ 消息框列表控件 """
 
     deleteChatSignal = pyqtSignal(str)
+    currentChatChanged = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -164,7 +165,20 @@ class ChatListWidget(ListWidget):
         self.deleteChatAct.triggered.connect(
             lambda: self.deleteChatWidget(self.currentRow()))
         self.hideChatAct.triggered.connect(self.__hideChatSlot)
+        self.itemClicked.connect(self.__itemClickedSlot)
 
-    def findChatListWidgetByIP(self, IP: str) -> ChatWidget:
+    def findChatListWidgetByIP(self, IP: str, isReturnIndex: bool = False) -> ChatWidget:
         """ 通过IP地址查找聊天框 """
-        return self.IPWidget_dict[IP]
+        widget = self.IPWidget_dict[IP]
+        if not isReturnIndex:
+            return widget
+        else:
+            return widget, self.chatWidget_list.index(widget)
+
+    def __itemClickedSlot(self, item: QListWidgetItem):
+        """ 当前行改变时切换当前会话窗口 """
+        if item not in self.item_list:
+            return
+        # 处理删除最后一个对话框的情况
+        widget = self.chatWidget_list[self.item_list.index(item)]
+        self.currentChatChanged.emit(self.widgetIP_dict[widget])

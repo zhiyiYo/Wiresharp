@@ -54,7 +54,7 @@ class MessageBubble(QLabel):
         else:
             # 如果有动图就设置一个QMovie
             img = BeautifulSoup(self.message, 'html.parser').find('img')
-            if img and img.get('src'):
+            if img and img.get('src') and img.get('src').endswith('.gif'):
                 movie = QMovie(img.get('src'))
                 self.setMovie(movie)
                 movie.start()

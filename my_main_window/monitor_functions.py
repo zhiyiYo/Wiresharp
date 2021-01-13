@@ -29,7 +29,6 @@ def adjust_maximized_client_rect(hWnd: int):
         return
     # 获取显示监视器信息，返回值为字典
     monitor_info = GetMonitorInfo(monitor)
-    print('monitor info',monitor_info)
     if not monitor_info:
         return
     # 返回显示监视器的工作区域矩形
