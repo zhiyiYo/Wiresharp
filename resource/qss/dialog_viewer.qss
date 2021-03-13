@@ -8,6 +8,14 @@ QScrollArea{
     border: none;
 }
 
+QLabel{
+    background: transparent;
+}
+
+QToolButton{
+    background-color: transparent;
+}
+
 /*滚动条*/
 QScrollBar {
     background: transparent;

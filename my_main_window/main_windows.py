@@ -98,6 +98,9 @@ class WireSharp(QWidget):
         """ 调整窗口大小 """
         self.titleBar.resize(self.width(), self.titleBar.height())
         self.stackedWidget.resize(self.width() - 402, self.height() - 40)
+        if hasattr(self,'navigationInterface'):
+            self.navigationInterface.resize(
+                self.navigationInterface.width(), self.height()-40)
         # 更新标题栏图标
         if isMaximized(int(self.winId())):
             self.titleBar.maxBt.setMaxState(True)

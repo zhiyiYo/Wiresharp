@@ -1,3 +1,7 @@
+QLabel{
+    background-color: transparent;
+}
+
 QLabel#contactNameLabel {
     background-color: transparent;
     font: 18px "Microsoft YaHei";
