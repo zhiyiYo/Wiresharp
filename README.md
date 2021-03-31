@@ -17,7 +17,3 @@ Start chat♂ting in Wiresharp
 ## Coding Environment
 * Python 3.8.6 64-bit
 * pyqt5 5.13.2
-* MSVC
-
-
-**NOTE: MSVC is necessary to load the dll.**

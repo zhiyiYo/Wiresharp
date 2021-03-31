@@ -1,0 +1,32 @@
+QWidget#welcomeInterface {
+    background-color: white;
+}
+
+QLabel#welcomeLabel {
+    background-color: transparent;
+    font: 48px "Microsoft YaHei";
+    font-weight: bold;
+}
+
+QLabel#promptLabel {
+    background-color: transparent;
+    font: 19px "Microsoft YaHei";
+    color: rgb(138, 141, 145);
+}
+
+QLineEdit {
+    border: none;
+    background-color: transparent;
+    padding: 14px 38px 14px 38px;
+    font: 19px 'Microsoft YaHei';
+    border-bottom: 2px solid rgb(224, 227, 230);
+    selection-background-color: rgb(0, 153, 188);
+}
+
+QToolButton {
+    border-image: url(app/resource/Image/welcome_interface/开始对话按钮_normal.png);
+}
+
+QToolButton:pressed {
+    border-image: url(app/resource/Image/welcome_interface/开始对话按钮_pressed.png);
+}
