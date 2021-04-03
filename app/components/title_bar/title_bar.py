@@ -1,6 +1,6 @@
 # coding:utf-8
 
-from PyQt5.QtCore import Qt,QSize
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QIcon, QResizeEvent
 from PyQt5.QtWidgets import QToolButton, QWidget
 from win32.lib import win32con
@@ -15,7 +15,6 @@ class ThreeStateToolButton(QToolButton):
 
     def __init__(self, iconPath_dict: dict, icon_size: tuple = (50, 50), parent=None):
         super().__init__(parent)
-        # 引用图标地址字典
         self.iconPath_dict = iconPath_dict
         self.resize(*icon_size)
         # 初始化小部件
